@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pencatatan Hutang</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h2{
+    text-align:center;
+}
+
+input, button{
+    padding:10px;
+    margin:5px 0;
+    width:100%;
+}
+
+button{
+    background:#007bff;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+table{
+    width:100%;
+    border-collapse: collapse;
+    margin-top:20px;
+}
+
+table, th, td{
+    border:1px solid #ddd;
+}
+
+th, td{
+    padding:10px;
+    text-align:center;
+}
+
+.lunas{
+    color:green;
+    font-weight:bold;
+}
+
+.belum{
+    color:red;
+    font-weight:bold;
+}
+
+.btn-lunas{
+    background:green;
+    padding:5px 10px;
+}
+
+.btn-hapus{
+    background:red;
+    padding:5px 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📒 Pencatatan Hutang</h2>
+
+<input type="text" id="nama" placeholder="Nama Peminjam">
+<input type="number" id="jumlah" placeholder="Jumlah Hutang">
+<button onclick="tambahHutang()">Tambah Hutang</button>
+
+<table>
+<thead>
+<tr>
+<th>Nama</th>
+<th>Jumlah</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+
+<tbody id="dataHutang"></tbody>
+
+</table>
+
+</div>
+
+<script>
+
+let hutang = JSON.parse(localStorage.getItem("hutang")) || [];
+
+function tampilkanData(){
+    let table = document.getElementById("dataHutang");
+    table.innerHTML="";
+
+    hutang.forEach((data,index)=>{
+
+        let statusClass = data.status=="Lunas" ? "lunas" : "belum";
+
+        table.innerHTML += `
+        <tr>
+        <td>${data.nama}</td>
+        <td>Rp ${data.jumlah}</td>
+        <td class="${statusClass}">${data.status}</td>
+        <td>
+        <button class="btn-lunas" onclick="lunas(${index})">Lunas</button>
+        <button class="btn-hapus" onclick="hapus(${index})">Hapus</button>
+        </td>
+        </tr>
+        `;
+    });
+
+}
+
+function tambahHutang(){
+
+    let nama = document.getElementById("nama").value;
+    let jumlah = document.getElementById("jumlah").value;
+
+    if(nama=="" || jumlah==""){
+        alert("Data harus diisi");
+        return;
+    }
+
+    hutang.push({
+        nama:nama,
+        jumlah:jumlah,
+        status:"Belum Lunas"
+    });
+
+    localStorage.setItem("hutang",JSON.stringify(hutang));
+
+    document.getElementById("nama").value="";
+    document.getElementById("jumlah").value="";
+
+    tampilkanData();
+}
+
+function lunas(index){
+
+    hutang[index].status="Lunas";
+    localStorage.setItem("hutang",JSON.stringify(hutang));
+    tampilkanData();
+}
+
+function hapus(index){
+
+    hutang.splice(index,1);
+    localStorage.setItem("hutang",JSON.stringify(hutang));
+    tampilkanData();
+}
+
+tampilkanData();
+
+</script>
+
+</body>
+</html>
