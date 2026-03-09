@@ -86,7 +86,7 @@ th, td{
 <h2>📒 Pencatatan Hutang</h2>
 
 <input type="text" id="nama" placeholder="Nama Peminjam">
-<input type="date" id="date">
+<input type="date" id="tanggal">
 <input type="number" id="jumlah" placeholder="Jumlah Hutang">
 <button onclick="tambahHutang()">Tambah Hutang</button>
 
@@ -138,6 +138,7 @@ function tambahHutang(){
 
     let nama = document.getElementById("nama").value;
     let jumlah = document.getElementById("jumlah").value;
+    let tanggal = document.getElementById("tanggal").value;
 
     if(nama=="" || jumlah==""){
         alert("Data harus diisi");
@@ -146,6 +147,7 @@ function tambahHutang(){
 
     hutang.push({
         nama:nama,
+         tanggal:tanggal,
         jumlah:jumlah,
         status:"Belum Lunas"
     });
@@ -153,6 +155,7 @@ function tambahHutang(){
     localStorage.setItem("hutang",JSON.stringify(hutang));
 
     document.getElementById("nama").value="";
+    document.getElementById("tanggal").value="";
     document.getElementById("jumlah").value="";
 
     tampilkanData();
