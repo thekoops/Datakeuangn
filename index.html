@@ -88,6 +88,7 @@ th, td{
 <input type="text" id="nama" placeholder="Nama Peminjam">
 <input type="date" id="tanggal">
 <input type="number" id="jumlah" placeholder="Jumlah Hutang">
+
 <button onclick="tambahHutang()">Tambah Hutang</button>
 
 <table>
@@ -95,7 +96,7 @@ th, td{
 <tr>
 <th>Nama</th>
 <th>Jumlah</th>
-<th>hari/tanggal</th>
+<th>Hari/Tanggal</th>
 <th>Status</th>
 <th>Aksi</th>
 </tr>
@@ -122,7 +123,8 @@ function tampilkanData(){
         table.innerHTML += `
         <tr>
         <td>${data.nama}</td>
-        <td>Rp ${data.jumlah}</td>
+        <td>Rp ${Number(data.jumlah).toLocaleString()}</td>
+        <td>${data.tanggal}</td>
         <td class="${statusClass}">${data.status}</td>
         <td>
         <button class="btn-lunas" onclick="lunas(${index})">Lunas</button>
@@ -137,17 +139,17 @@ function tampilkanData(){
 function tambahHutang(){
 
     let nama = document.getElementById("nama").value;
-    let jumlah = document.getElementById("jumlah").value;
     let tanggal = document.getElementById("tanggal").value;
+    let jumlah = document.getElementById("jumlah").value;
 
-    if(nama=="" || jumlah==""){
+    if(nama=="" || jumlah=="" || tanggal==""){
         alert("Data harus diisi");
         return;
     }
 
     hutang.push({
         nama:nama,
-         tanggal:tanggal,
+        tanggal:tanggal,
         jumlah:jumlah,
         status:"Belum Lunas"
     });
